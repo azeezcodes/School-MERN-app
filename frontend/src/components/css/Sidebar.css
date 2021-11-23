@@ -1,0 +1,235 @@
+@import './course.css';
+
+.sidebar {
+	background-color: #f6f6f6;
+	height: 80px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	z-index: 11;
+	padding-right: 1.8rem;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 9997;
+	border-bottom: 1.5px solid var(--grey);
+}
+
+.sidebar a {
+	color: #000;
+	font-weight: 600;
+}
+
+
+.menu-bars {
+	margin-left: 1rem;
+	/* font-size: 2rem; */
+	background: none;
+}
+
+.nav-menu {
+	background-color: #F8F8F8;
+	color: var(--textColor);
+	/* box-shadow: 0px 10px 10px #d3d3d3; */
+	z-index: 9998;
+	width: 20%;
+	height: 100vh;
+	display: flex;
+	position: fixed;
+	/* overflow: clip; */
+	top: 0;
+	left: -100%;
+	/* transition: 0.85s; */
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.nav-menu.active {
+	left: 0;
+	/* transition: 350ms; */
+}
+
+.nav-text {
+	display: flex;
+	flex-direction: row;
+	width: calc(100% - 0px);
+	justify-content: flex-start;
+	/* margin-right: 15px;
+	margin-left: 15px; */
+	
+	border-left: 7px solid transparent;
+	padding-left: 30px;
+	align-items: center;
+	list-style: none;
+	height: 50px;
+	text-align: left;
+	cursor: pointer;
+	transition: 0.15s ease-in;
+	color: var(--textColor);
+}
+.nav-text:hover {
+	background-color: var(--grey);
+	transition: 0.15s ease-in;
+}
+
+.nav-text:hover *{
+	color: #6C63FF;
+}
+
+.nav-text a {
+	text-decoration: none;
+	color: var(--textColor);
+	font-size: 16px;
+	font-family: 'Poppins';
+	font-weight: 600;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 15px;
+}
+
+.nav-menu-items {
+	width: 100%;
+}
+
+.navbar-toggle {
+	/* background-color: darkcyan; */
+	background-color: #ddd;
+	width: 100%;
+	height: 80px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.navbar-toggle a {
+	color: #000;
+	font-weight: 600;
+}
+
+.menu-div {
+	background-color: transparent;
+	transition: 0.2s ease-in;
+}
+.menu-div:hover {
+	background-color: #eeeeee;
+	transition: 0.2s ease-out;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 0px;
+}
+.row * {
+	margin-right: 20px;
+}
+
+.my-profile-box {
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	justify-content: flex-start;
+}
+.my-profile-box * {
+	margin-left: 10px;
+}
+
+.settings-icon {
+	width: 35px;
+	height: 35px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 40px;
+	overflow: hidden;
+	margin: 10px;
+	transition: 0.2s ease;
+	cursor: pointer;
+	margin: 0 20px 0 20px;
+}
+.settings-icon:hover {
+	background-color: var(--grey);
+	/* opacity: 10%; */
+	transition: 0.2s ease;
+}
+.settings-icon.seticon {
+	z-index: 9999;
+	opacity: 1;
+}
+
+.MuiSwitch-colorPrimary {
+	color: #6C63FF;
+}
+
+.toggle.react-toggle--focus .react-toggle-thumb {
+	box-shadow: none;
+}
+.chartToggle.react-toggle--focus .react-toggle-thumb {
+	box-shadow: none;
+}
+
+.toggle * {
+	box-shadow: none;
+}
+
+.toggle.react-toggle--checked .react-toggle-track {
+	background-color: #d3d3d3;
+}
+.chartToggle.react-toggle--checked .react-toggle-track {
+	background-color: #6C63FF;
+}
+.toggle.react-toggle--checked .react-toggle-track:hover{
+	background-color: #d3d3d3;
+}
+
+.toggle.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+	background-color: #d3d3d3;
+}
+
+.toggle.react--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+	background-color: #d3d3d3;
+}
+
+.toggle.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+	box-shadow: none;
+}
+
+.chartToggle.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+	box-shadow: none;
+}
+
+.toggle.react-toggle--checked .react-toggle-thumb {
+	border: 2px solid #d3d3d3;
+}
+
+.profile-option {
+	height: 35px;
+	border-radius: 50px;
+	background-color: var(--grey);
+	margin: 20px 0;
+	padding: 3px 15px;
+	display: flex;
+	flex-direction: row;
+	width: auto;
+	flex-grow: 1;
+	align-items: center;
+	transition: 0.2s ease-in;
+	cursor: pointer;
+	margin-right: 10px;
+	/* border: 2px solid var(--grey); */
+	justify-content: center;
+}
+
+.profile-option:last-child {
+	margin-right: 0;
+}
+
+.profile-option:hover {
+	background-color: #6C63FF2a;
+	transition: 0.2s ease-in;
+	/* border: 2px solid var(--background); */
+}

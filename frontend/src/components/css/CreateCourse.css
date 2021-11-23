@@ -1,0 +1,44 @@
+.create-course-div {
+	/* display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 2px;
+	color: #000;
+	font-size: 20px;
+	width: 95%;
+	height: 100%;
+	margin-left: 8px;
+	position: absolute;
+	top: 30%;
+	height: 60px; */
+	width: 70px;
+	height: 70px;
+	border-radius: 70px;
+	background-color: #6C63FF;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 2px 2px 12px #4343434a;
+	cursor: pointer;
+	position: absolute;
+	right: 40;
+	bottom: 40;
+} 
+
+.create-course-div:hover {
+	background-color: #6C63FF;
+	color: white;
+}
+
+
+.create-course-buttons {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.create-course-buttons button {
+	margin-right: 10px;
+	color: white;
+}
