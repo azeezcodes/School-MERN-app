@@ -80,8 +80,8 @@ const AssignmentDetails = () => {
 		Axios.get(`/marks/${assignmentID}`)
 		.then(res => {
 			let a = res.data;
-            
-            Axios.get(`/course/students/${courseId}`)
+            console.log("courseId", courseId)
+            Axios.get(`/assignment/students/${assignmentID}`)
             .then((res) => {
                 let students = res.data.data;
                 let unsubmitted = students.filter((student) => {

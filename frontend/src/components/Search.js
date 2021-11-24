@@ -2,7 +2,7 @@ import React from "react";
 import Axios from "axios";
 import { toast } from "react-toastify";
 import { Search, Mail } from "react-feather";
-import { getRandomUser2 } from "./random";
+import { getRandomUser } from "./random";
 import "./css/CreateCourse.css";
 import "./css/course.css";
 
@@ -50,8 +50,11 @@ const SearchPage = ({}) => {
   };
 
   const search = () => {
-    if (!fName.length || !lName.length) toast.error("Please specify name");
-
+    if (!fName.length || !lName.length)
+    {
+      toast.error("Please specify both first and last name");
+      return;
+    }
     setCourseStudents([]);
     let arr = [];
     course.map((course, index) => {
@@ -62,14 +65,13 @@ const SearchPage = ({}) => {
           } else {
             toast.error("Unable to fetch student data");
           }
+          setCourseStudents(arr);
+          setIsReady(true);
         })
         .catch((error) => {
           console.log(error);
         });
     });
-
-    setCourseStudents(arr);
-    setIsReady(true);
   };
 
   const MarksRow = (stud) => {
@@ -115,7 +117,7 @@ const SearchPage = ({}) => {
           >
             <img
               className="changeColorBG"
-              src={getRandomUser2()}
+              src={getRandomUser()}
               style={{ width: 35, height: 35, marginRight: 0, marginTop: 5 }}
             />
           </div>

@@ -7,7 +7,6 @@ import {FileText, Book, HelpCircle, ChevronRight, Trash2} from 'react-feather';
 const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isActive, courseId, studentId}) => {	
 	const icon = postType === 'assignment' ? <FileText size={25} color="#6C63FF"/> : postType === 'quiz' ?<HelpCircle size={25} color="#6C63FF"/> : <Book size={25} color="#6C63FF"/>
 	let userType = JSON.parse(localStorage.getItem('userType'));
-	
 	if(postType === 'studymaterial') postType = 'study material'
 	let type = postType;
 	if(!title.length) title = ''

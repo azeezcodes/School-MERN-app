@@ -214,4 +214,22 @@ router.get("/studentCount/assignment/:id", async (req, res) => {
   }
 })
 
+
+router.get("/assignment/students/:id", async (req, res) => {
+  const _id = req.params.id;
+  const students = [];
+  try {
+      const assignment = await Assignment.findById(_id);
+      const records = await Record.find({course_id: assignment.course_id});
+      for (const record of records) {
+          const student = await Student.findById(record.student_id);
+          students.push(student);
+      }
+      res.send({success: true, data: students});
+  } catch(error) {
+      console.log(error)
+      res.status(500).send({success: false, error});
+  }
+})
+
 module.exports = router;
