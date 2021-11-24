@@ -239,6 +239,11 @@ const Sidebar = () => {
     window.location.reload();
   };
 
+  const logout = () => {
+    console.log("logout");
+    window.localStorage.clear();
+  }
+
   return (
     <div>
       <div
@@ -506,7 +511,7 @@ const Sidebar = () => {
                   </p>
                 </div>
                 <Link to="/">
-                  <div className="profile-option">
+                  <div className="profile-option" onClick={logout}>
                     <LogOut size={15} className="changeColor" />
                     <p
                       className="sub"
@@ -1173,7 +1178,7 @@ const Sidebar = () => {
               letterSpacing: 0.4,
               marginTop: 50,
               textAlign: "center",
-            }}
+            }} onClick={logout}
           >
             Log out
           </p>

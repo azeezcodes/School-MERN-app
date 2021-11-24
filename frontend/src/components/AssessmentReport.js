@@ -67,7 +67,7 @@ const generatePDF = (tickets,notSubmittedTickets) => {
     doc.save(`report.pdf`);
 }
 
-const AssessmentReport = () => {
+const AssessmentReport = (props) => {
     const [chart, setChart] = React.useState('bar')
 
     const handleChartChange = () => {
@@ -96,7 +96,6 @@ const AssessmentReport = () => {
     let studentMarksInfo = []
 
     React.useEffect(() => {
-		
 		Axios.get( `/assignment/${assignmentID}`)
 		.then(res => {
 			let a = res.data.data;
@@ -115,7 +114,7 @@ const AssessmentReport = () => {
 			let a = res.data.count;
 			setStudentCount(a);
 		})
-		.catch(() => console.log('error'))
+		.catch((error) => console.log(error))
     },[ignored, studentMarksInfo])
     
     React.useEffect(() => {
@@ -125,7 +124,7 @@ const AssessmentReport = () => {
 		.then(res => {
             let a = res.data;
             
-            Axios.get(`/course/students/${courseId}`)
+            Axios.get(`/course/students/${props.courseId}`)
             .then((res) => {
                 let students = res.data.data;
                 let unsubmitted = students.filter((student) => {

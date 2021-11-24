@@ -20,7 +20,7 @@ let user = localdata ? localdata : {
 console.log(user);
 let userType = JSON.parse(localStorage.getItem('userType'))
 
-const AssignmentDetails = (props) => {
+const AssignmentDetails = () => {
 	const [submission, setSubmission] = useState(null)
 	const [hasAttachment, setHasAttachment] = useState(false)
 	const [modalIsOpen, setModal] = React.useState(false)
@@ -213,7 +213,7 @@ const AssignmentDetails = (props) => {
                         <Link to={{
 							pathname: `/assessmentreport/${assignmentID}`,
 							state: {
-								courseId: props.courseId
+								courseId
 							}
 						}}>
                         <button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>

@@ -69,9 +69,9 @@ const MyCourses = () => {
             return toast.error("Error fetching courses");
           }
         })
-        .catch(() =>
+        .catch((error) => {
           toast.error("Could not fetch your courses. Please try again")
-        );
+      });
       console.log(courses);
   }, [ignoredVar]);
 

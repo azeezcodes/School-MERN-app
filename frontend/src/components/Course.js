@@ -280,7 +280,7 @@ const Course = () => {
 		}
 
 		let materialData = {
-			"course_id": currentCourseId,
+			"course_id": courseID,
 			"title": title,
 			"description": description,
 			"due_date": dueDate,
@@ -549,7 +549,7 @@ const Course = () => {
 				<div style={Object.assign({}, styles.slide, styles.slide1)}>
 					{posts.length ?
 					posts.map((item, index) => {
-						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id} courseId={currentCourseId} studentId={user._id}/>
+						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id} courseId={courseID} studentId={user._id}/>
 					}): <EmptyStateSmall title='No Posts' d1="Teacher has not posted anything in this course yet"/>
 					}
 
@@ -765,7 +765,7 @@ const Course = () => {
 
 				<div style={{bottom: 10, right: 10, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button onClick={() => {if(isQuiz)
-						window.location.href=`/quiznew/${courseID}`}
+						window.location.href=`/createQuiz/${courseID}`}
 					}>
 						<p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}} onClick={postMaterial}>Create</p>
 					</button>

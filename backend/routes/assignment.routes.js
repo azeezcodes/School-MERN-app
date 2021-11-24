@@ -4,6 +4,7 @@ const Assignment = require("../models/assignment.model");
 const Course = require("../models/course.model");
 const Student = require("../models/student.model");
 const Submission = require("../models/submission.model");
+const Record = require("../models/record.model")
 
 const router = new express.Router();
 
@@ -23,7 +24,7 @@ router.post("/assignment", async (req, res) => {
   const assignment = new Assignment(req.body);
   try {
     await assignment.save();
-    return res.send({ data: assignment, success: true });
+    res.send({ data: assignment, success: true });
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
@@ -208,6 +209,7 @@ router.get("/studentCount/assignment/:id", async (req, res) => {
       const count = await Record.where({ course_id: assignment.course_id}).countDocuments();
       res.send({success: true, data: {count}});
   } catch(error) {
+    console.log(error)
       res.status(500).send({success: false, error});
   }
 })

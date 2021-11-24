@@ -43,10 +43,10 @@ const Notes = ({}) => {
             } else {
                 toast.error('Note cannot be added at the moment. Please try again later!')
             }
+            setNote('')
+            forceUpdate()
         })
         .catch(() => toast.error('Unable to add note'))
-        setNote('')
-        forceUpdate()
     }
 
     const deleteNote = (id) => {
@@ -57,10 +57,10 @@ const Notes = ({}) => {
             } else {
                 toast.error('Unable to delete note')
             }
+            setNote('')
+            forceUpdate()
         })
         .catch(() => toast.error('Unable to delete note'))
-        setNote('')
-        forceUpdate()
     }
 
     React.useEffect(() => {
@@ -74,7 +74,7 @@ const Notes = ({}) => {
             }
         })
         .catch(() => toast.error('Could not fetch notes'))
-    },[ignore])
+    },[ignore, note])
 	
     const NoteBox = ({date, content, id, deleteNote}) => {
         let parsedDate = new Date(date).toDateString();

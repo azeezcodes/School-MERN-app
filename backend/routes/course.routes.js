@@ -66,7 +66,10 @@ router.get("/fetchCourse/student/:id", async(req, res) => {
             const course = await Course.findById(record.course_id);
             courses.push(course);
         }
-        res.send({success: true, data: courses});
+        if(courses.length)
+            res.send({success: true, data: courses});
+        else
+            res.send({success: false})
     } catch(error) {
         res.status(500).send({success: false, error});
     }
@@ -94,6 +97,7 @@ router.get("/course/students/:id", async (req, res) => {
         }
         res.send({success: true, data: students});
     } catch(error) {
+        console.log(error)
         res.status(500).send({success: false, error});
     }
 })
