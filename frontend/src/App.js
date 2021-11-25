@@ -10,8 +10,10 @@ import Home from "./components/Home";
 import Notes from "./components/Notes";
 import Search from "./components/Search";
 import Course from "./components/Course";
+import Quiz from "./components/Quiz";
 import AssignmentDetails from "./components/AssignmentDetails";
 import AssessmentReport from "./components/AssessmentReport";
+import QuizQuestion from "./components/QuizQuestion";
 
 function App() {
   let width = window.innerWidth 
@@ -45,6 +47,8 @@ function App() {
         <Route path="/course/*" element={<><Course /><Sidebar /></>}exact/>
         <Route path="/assignment/*" element={<><AssignmentDetails /><Sidebar /></>}exact/>
         <Route path="/assessmentReport/*" element={<><AssessmentReport /><Sidebar /></>}exact/>
+        <Route path="/quiz/*" element={<><Quiz /><Sidebar /></>}exact/>
+        <Route path="/createQuiz/*" element={<><QuizQuestion /><Sidebar /></>}exact/>
       </Routes>
       <ToastContainerCustom />
     </Scrollbars>

@@ -7,6 +7,7 @@ const courseRouter = require("./routes/course.routes");
 const noteRouter = require("./routes/note.routes");
 const assignmentRouter = require("./routes/assignment.routes");
 const messageRouter = require("./routes/message.routes");
+const quizRouter = require("./routes/quiz.routes");
 
 require("./mongoose");
 require("dotenv").config();
@@ -24,6 +25,7 @@ app.use(courseRouter)
 app.use(noteRouter)
 app.use(assignmentRouter)
 app.use(messageRouter)
+app.use(quizRouter)
 
 app.use(express.static(path.resolve(__dirname, '../frontend/build')));
 

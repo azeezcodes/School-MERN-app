@@ -706,7 +706,7 @@ const Sidebar = () => {
                       style={{
                         color:
                           GetCurrentPath() === `/course/${item._id}`
-                            ? "#17B903"
+                            ? "#6C63FF"
                             : theme === "dark"
                             ? "#BABABA"
                             : "#232323",

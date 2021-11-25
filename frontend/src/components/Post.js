@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {FileText, Book, HelpCircle, ChevronRight, Trash2} from 'react-feather';
 
-const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isActive, courseId, studentId}) => {	
+const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isActive, courseId, studentId, forceUpdate}) => {	
 	const icon = postType === 'assignment' ? <FileText size={25} color="#6C63FF"/> : postType === 'quiz' ?<HelpCircle size={25} color="#6C63FF"/> : <Book size={25} color="#6C63FF"/>
 	let userType = JSON.parse(localStorage.getItem('userType'));
 	if(postType === 'studymaterial') postType = 'study material'
 	let type = postType;
 	if(!title.length) title = ''
 	if(!info.length) info = ''
-	
 	const isAssignment = postType === 'assignment'
 	const isQuiz = postType === 'quiz'
 	if(isQuiz) type = 'QUIZ'
@@ -21,6 +20,7 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 		.then(res => {
 			if(res.data.success) {
 				toast.success('Assignment deleted successfully');
+				forceUpdate()
 			} else {
 			}
 		})

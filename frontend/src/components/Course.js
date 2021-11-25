@@ -151,10 +151,10 @@ const Course = () => {
 	},[ignore, courseNameModalIsOpen])
 
 	React.useEffect(() => {
-		Axios.get(`http://dbms-back.herokuapp.com/quizfromcourse/${courseID}`)
+		Axios.get(`/quiz/course/${courseID}`)
 		.then(res => {
 			if(res.data.success) {
-				setQuizzes(res.data.data)
+				setQuizzes(res.data.data.reverse())
 			}
 		})
 		.catch(e => console.log(e))
@@ -209,7 +209,7 @@ const Course = () => {
 			}
 		})
 	}, [])
-	
+
 	const openCourseNameModal = () => setCourseNameModal(true);
 	const closeCourseNameModal = () => setCourseNameModal(false);
 	const openModal = () => setIsOpen(true);
@@ -549,14 +549,17 @@ const Course = () => {
 				<div style={Object.assign({}, styles.slide, styles.slide1)}>
 					{posts.length ?
 					posts.map((item, index) => {
-						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id} courseId={courseID} studentId={user._id}/>
-					}): <EmptyStateSmall title='No Posts' d1="Teacher has not posted anything in this course yet"/>
+						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id} forceUpdate={forceUpdate}/>
+					}): null
 					}
 
 					{quizzes.length ? quizzes.map((item, index) => {
 							return <Post postType={'quiz'} title={item.quiz_title} info="" quizID={item._id} isActive={item.is_active} noOfQues={item.number_of_questions} totalMarks={item.total_marks}/>
 						}) : null
-						
+					}
+
+					{
+						!quizzes.length && !posts.length ? <EmptyStateSmall title='No Posts' d1="Teacher has not posted anything in this course yet"/> : null
 					}	
 				</div>
 
@@ -584,7 +587,7 @@ const Course = () => {
 				</div>
 
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
-				{quizzes.length ? quizzes.reverse().map((item, index) => {
+				{quizzes.length ? quizzes.map((item, index) => {
 							return <Post postType={'quiz'} title={item.quiz_title} info="" quizID={item._id} isActive={item.is_active} noOfQues={item.number_of_questions} totalMarks={item.total_marks}/>
 						}) : <EmptyStateSmall title='No Quiz' d1="Teacher has not posted any quizzes in this course yet"/>
 				}
@@ -805,35 +808,3 @@ const Course = () => {
 }
 
 export default Course
-
-
-// const quizzes = [
-// 	{
-// 		quiz_id: 123,
-// 		number_of_questions: 2,
-// 		total_marks: 10,
-// 		is_active: true,
-// 		teacher_id: 234,
-// 		course_id: 453,
-// 		quiz_title: 'Quiz 1 : Class Test'
-// 	},
-// 	{
-// 		quiz_id: 124,
-// 		number_of_questions: 2,
-// 		total_marks: 10,
-// 		is_active: false,
-// 		teacher_id: 234,
-// 		course_id: 453,
-// 		quiz_title: 'Quiz 2 : Class Test'
-// 	},
-// 	{
-// 		quiz_id: 125,
-// 		number_of_questions: 2,
-// 		total_marks: 10,
-// 		is_active: true,
-// 		teacher_id: 254,
-// 		course_id: 453,
-// 		quiz_title: 'Quiz 3 : Class Test'
-// 	},
-// ]
-

@@ -447,7 +447,7 @@ const AssessmentReport = (props) => {
                         {studentName}
                     </p>
                 </div>
-                <p style={{fontFamily: 'Poppins', fontSize: 22, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingRight: 20 , color:'#09a407'}}>
+                <p style={{fontFamily: 'Poppins', fontSize: 22, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingRight: 20 , color:'#6C63FF'}}>
                         {marks}
                 </p>
             </div>
@@ -559,7 +559,7 @@ const AssessmentReport = (props) => {
                     <div className="stats-box-2">
                         <h3>Count</h3>
                         <div className="students-box" style={{marginTop: 10, padding: 0, marginLeft: 0}}>
-                            <div className="students-box-circle" style={{marginLeft: 0, background: '#09a407'}}><img src={userImage}/></div>
+                            <div className="students-box-circle" style={{marginLeft: 0, background: '#6C63FF'}}><img src={userImage}/></div>
                             <div className="students-box-circle" style={{marginLeft: 17,  background: '#0F98D9', transform: 'scale(1.02)'}}><img src={userImage3}/></div>
                             <div className="students-box-circle" style={{marginLeft: 34,  background: '#545454', transform: 'scale(1.05)'}}><img src={userImage4}/></div>
                             <p className="sub" style={{marginLeft: 70, fontFamily:'Poppins', fontSize: 13, color: '#434343', fontWeight: 500, marginTop: 30}}>
