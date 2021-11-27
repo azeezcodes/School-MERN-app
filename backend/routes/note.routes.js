@@ -1,9 +1,9 @@
 const express = require("express");
-const { findByIdAndDelete } = require("../models/note.model");
 const Note = require("../models/note.model");
 
 const router = new express.Router();
 
+// Create a new note
 router.post("/notes", async (req, res) => {
     const note = new Note(req.body);
     try {
@@ -15,6 +15,7 @@ router.post("/notes", async (req, res) => {
     }
 })
 
+// Fetch notes by id
 router.get("/notes/:userType/:id", async(req, res) => {
     const user_id = req.params.id;
     const user_type = req.params.userType;
@@ -30,6 +31,7 @@ router.get("/notes/:userType/:id", async(req, res) => {
     }
 })
 
+// Delete note
 router.delete("/notes/:id", async (req, res) => {
     try {
         const note = await Note.findByIdAndDelete(req.params.id)

@@ -1,12 +1,11 @@
 import React from "react";
 import Axios from "axios";
 import { toast } from "react-toastify";
-import { RotateCcw } from "react-feather";
 import userImage4 from "../assets/user.svg";
 import EmptyState from "./EmptyState";
 import CreateCourse from "./CreateCourse";
 import CourseCard from "./CourseCard";
-import "./css/course.css";
+import "./css/Course.css";
 
 let localdata = JSON.parse(localStorage.getItem("userDetails"));
 let userType = JSON.parse(localStorage.getItem("userType"));
@@ -23,12 +22,13 @@ let user = localdata
 let { _id, year, department } = user;
 
 const titleCase = (str) => {
-	var splitStr = str.toLowerCase().split(' ');
-	for (var i = 0; i < splitStr.length; i++) {
-		splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
-	}
-	return splitStr.join(' '); 
- }
+  var splitStr = str.toLowerCase().split(" ");
+  for (var i = 0; i < splitStr.length; i++) {
+    splitStr[i] =
+      splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+  }
+  return splitStr.join(" ");
+};
 
 const MyCourses = () => {
   const [courses, setCourses] = React.useState([]);
@@ -40,80 +40,69 @@ const MyCourses = () => {
   const forceUpdate = React.useCallback(() => update((v) => v + 1), []);
 
   React.useEffect(() => {
-      Axios.get(`/${userType}/${_id}`, {
-        header: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
+    Axios.get(`/api/${userType}/${_id}`, {
+      header: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          setUserInfo(res.data.data);
+        } else {
+        }
       })
-        .then((res) => {
-          if (res.data.success) {
-            setUserInfo(res.data.data);
-          } else {
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      toast.info("Fetching courses...");
-
-      Axios.get(`fetchCourse/${userType}/${_id}`, {
-        header: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-      })
-        .then((res) => {
-          if (res.data.success) {
-            setCourses(res.data.data);
-          } else {
-            return toast.error("Error fetching courses");
-          }
-        })
-        .catch((error) => {
-          toast.error("Could not fetch your courses. Please try again")
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(courses);
+
+    Axios.get(`/api/fetchCourse/${userType}/${_id}`, {
+      header: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          setCourses(res.data.data);
+        } else {
+        }
+      })
+      .catch((error) => {});
   }, [ignoredVar]);
 
   const getTeachers = () => {
     let courseArray = [...courseTeachers];
     courses.map((course, index) => {
-      Axios.get(
-        `/teacher/${course.teacher_id}`,
-        {
-          header: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-        }
-      )
+      Axios.get(`/api/teacher/${course.teacher_id}`, {
+        header: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+      })
         .then((res) => {
           courseArray[index] = res.data.data.fName
             .concat(" ")
             .concat(res.data.data.lName);
           setCourseTeachers(courseArray);
-          console.log(courses);
-          console.log(courseArray);
         })
-        .catch(() => toast.error("Error fetching courses"));
+        .catch(() => toast.error("Error"));
     });
   };
 
   const getStudentCount = () => {
     let courseArray = [...studentCount];
     courses.map((course, index) => {
-      Axios.get(
-        `/studentCount/${course._id}`,
-        {
-          header: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-        }
-      )
+      Axios.get(`/api/studentCount/${course._id}`, {
+        header: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+      })
         .then((res) => {
           courseArray[index] = res.data.data.count;
           setStudentCount(courseArray);
         })
-        .catch(() => toast.error("Error fetching courses"));
+        .catch((error) => {
+          console.log(error);
+          toast.error("Error");
+        });
     });
   };
 
@@ -124,14 +113,6 @@ const MyCourses = () => {
 
   return (
     <div className="course-container">
-      <div
-        className="settings-icon"
-        style={{ position: "absolute", top: 100, right: 15 }}
-        onClick={forceUpdate}
-      >
-        <RotateCcw size={21} color="#6C63FF" className="changeColor" />
-      </div>
-
       <div
         style={{
           width: "auto",
@@ -235,9 +216,7 @@ const MyCourses = () => {
                   year={course.year}
                   dept={course.department}
                   teacher={courseTeachers[index]}
-                  numberOfStudents={
-                    studentCount[index]
-                  }
+                  numberOfStudents={studentCount[index]}
                 />
               );
             })
@@ -245,7 +224,7 @@ const MyCourses = () => {
 
         {courses.length ? null : <EmptyState />}
       </div>
-      <CreateCourse reload={forceUpdate}/>
+      <CreateCourse reload={forceUpdate} />
     </div>
   );
 };

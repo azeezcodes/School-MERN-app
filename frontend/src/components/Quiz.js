@@ -31,7 +31,7 @@ import userImage3 from "../assets/user3.png";
 import userImage4 from "../assets/user4.png";
 import "react-toggle/style.css";
 import "jspdf-autotable";
-import "./css/course.css";
+import "./css/Course.css";
 import "./css/CreateCourse.css";
 
 let userType = JSON.parse(localStorage.getItem("userType"));
@@ -68,7 +68,6 @@ const generatePDF = (tickets) => {
     tableRows.push(ticketData);
   });
 
-  console.log(doc.getFontList());
   doc.autoTable(tableColumn, tableRows, { startY: 40 });
 
   doc.addFont("Helvetica", "Helvetica", "");
@@ -122,10 +121,9 @@ const Quiz = ({ history }) => {
   React.useEffect(() => {
     let loc = window.location.href.split("/");
     let quizid = loc[loc.length - 1];
-    Axios.get(`/quiz/${quizid}`).then((res) => {
+    Axios.get(`/api/quiz/${quizid}`).then((res) => {
       if (res.data.success) {
         setQuizInfo(res.data.data);
-        console.log(res.data.data);
         setIsActive(res.data.data.is_active);
       }
     });
@@ -135,7 +133,7 @@ const Quiz = ({ history }) => {
     let loc = window.location.href.split("/");
     let quizid = loc[loc.length - 1];
     if (userType === "student") {
-      Axios.get(`/quiz/hasSubmitted/${quizid}/${user._id}`).then((res) => {
+      Axios.get(`/api/quiz/hasSubmitted/${quizid}/${user._id}`).then((res) => {
         if (res.data.data) {
           setHasSubmitted(true);
         }
@@ -147,7 +145,7 @@ const Quiz = ({ history }) => {
     window.scroll({ top: 0, left: 0, behavior: "smooth" });
     let loc = window.location.href.split("/");
     let quizid = loc[loc.length - 1];
-    Axios.get(`/quizResult/${quizid}`).then((res) => {
+    Axios.get(`/api/quizResult/${quizid}`).then((res) => {
       if (res.data.success) {
         setQuizResults(res.data.data);
       }
@@ -156,7 +154,7 @@ const Quiz = ({ history }) => {
 
   React.useEffect(() => {
     let quizID = quizInfo ? quizInfo._id : null;
-    Axios.get(`/questions/${quizID}`).then((res) => {
+    Axios.get(`/api/questions/${quizID}`).then((res) => {
       if (res.data.success) {
         let question = res.data.data;
         setQuestions(question);
@@ -891,7 +889,6 @@ const Quiz = ({ history }) => {
     };
     setQuizResponse(responseObj);
     openModal();
-    console.log(responseObj);
   };
 
   const postQuizSubmission = () => {
@@ -900,10 +897,9 @@ const Quiz = ({ history }) => {
         return toast.error("Quiz submission is closed");
       }
     }
-    Axios.post("/submitQuiz", quizResponse)
+    Axios.post("/api/submitQuiz", quizResponse)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data);
           openModalResult();
         } else {
           toast.error("You have already submitted this quiz");
@@ -915,17 +911,16 @@ const Quiz = ({ history }) => {
   const startQuiz = () => {
     setIsActive(true);
     forceUpdate();
-    Axios.post(`/startQuiz/${quizInfo._id}`).then((res) => {
+    Axios.post(`/api/startQuiz/${quizInfo._id}`).then((res) => {
       if (res.data.success) {
       }
     });
   };
 
   const endQuiz = () => {
-    console.log("ending quiz");
     setIsActive(false);
     forceUpdate();
-    Axios.post(`/endQuiz/${quizInfo._id}`).then((res) => {
+    Axios.post(`/api/endQuiz/${quizInfo._id}`).then((res) => {
       if (res.data.success) {
       }
     });
@@ -935,17 +930,14 @@ const Quiz = ({ history }) => {
     let loc = window.location.href.split("/");
     let quizID = loc[loc.length - 1];
     let courseId = "";
-    Axios.post(`/deleteQuiz/${quizID}`)
+    Axios.post(`/api/deleteQuiz/${quizID}`)
       .then((res) => {
-        console.log("delete", res.data);
         courseId = res.data.data.course_id;
         if (res.data.success) {
-          Axios.post(`/deleteQuestion/${quizID}`).then((res1) => {
-            console.log("deleteQuestion", res1.data);
+          Axios.post(`/api/deleteQuestion/${quizID}`).then((res1) => {
             if (res1.data.success) {
-              Axios.post(`/deleteSubmission/${quizID}`).then((res2) => {
+              Axios.post(`/api/deleteSubmission/${quizID}`).then((res2) => {
                 if (res2.data.success) {
-                  console.log("deleteSubmission", res2.data);
                   toast.success("Deleted quiz successfully");
                   setTimeout(() => {
                     window.location.href = `/course/${courseId}`;
@@ -961,14 +953,14 @@ const Quiz = ({ history }) => {
 
   const renameQuiz = () => {
     let quizID = quizInfo._id;
-    Axios.post(`/quiz/changeName/${quizID}`, { quiz_name: quizNewName }).then(
-      (res) => {
-        if (res.data.success) {
-          setQuizNewName("");
-          toast.success("Quiz name updated");
-        }
+    Axios.post(`/api/quiz/changeName/${quizID}`, {
+      quiz_name: quizNewName,
+    }).then((res) => {
+      if (res.data.success) {
+        setQuizNewName("");
+        toast.success("Quiz name updated");
       }
-    );
+    });
   };
 
   React.useEffect(() => {
@@ -1001,7 +993,6 @@ const Quiz = ({ history }) => {
           marginLeft: 20,
         }}
       >
-        {/* <ArrowLeft size={27} className="sub" style={{cursor: "pointer"}} onClick={() => history.goBack()}/>                  */}
         <h2 className="course-title" style={{ fontSize: 30, margin: 0 }}>
           {quizInfo ? quizInfo.quiz_title : null}
         </h2>
@@ -1776,7 +1767,6 @@ const Quiz = ({ history }) => {
         closeTimeoutMS={200}
         className="background"
       >
-
         <h2
           className="sub"
           style={{
@@ -2103,7 +2093,6 @@ const LineChart = ({ quizResults }) => {
 const BarChartCustom = ({ quizResults }) => {
   let labelsArr = [];
   quizResults.map((q) => labelsArr.push(q.student_name));
-  console.log();
   return (
     <Bar
       width="100%"

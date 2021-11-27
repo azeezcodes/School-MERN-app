@@ -5,6 +5,7 @@ const Teacher = require("../models/teacher.model");
 
 const router = new express.Router();
 
+// Create new teacher
 router.post("/teachers", async (req, res) => {
     const teacher = new Teacher(req.body);
 
@@ -19,19 +20,23 @@ router.post("/teachers", async (req, res) => {
     }
 })
 
+// Login teacher
 router.post("/teachers/login", async (req, res) => {
     try {
         const teacher = await Teacher.findOne({email : req.body.email});
         const isMatch = await bcrypt.compare(req.body.password, teacher.password);
-        const token = jwt.sign({_id: teacher._id}, 'thisismykey');
+        const token = jwt.sign({_id: teacher._id}, process.env.JWT_KEY);
         if(isMatch)
             res.send({success: true, data: teacher, token})
+        else
+            res.send({success: false})
     } catch(error) {
         console.log(error);
         res.status(400).send({success: false, error});
     }
 })
 
+// Get an array of all teachers
 router.get("/teachers", async (req, res) => {
 
     try {
@@ -42,6 +47,7 @@ router.get("/teachers", async (req, res) => {
     }
 })
 
+// Fetch teacher by ID
 router.get("/teacher/:id", async (req, res) => {
     const _id = req.params.id;
 
@@ -56,6 +62,7 @@ router.get("/teacher/:id", async (req, res) => {
     }
 })
 
+// Update teacher name
 router.post("/update/teacher", async (req, res) => {
     try {
         const teacher = await Teacher.findOneAndUpdate({email: req.body.email}, {

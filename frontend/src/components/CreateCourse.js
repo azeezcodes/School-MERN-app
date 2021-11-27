@@ -8,7 +8,7 @@ import {
   departmentOptions,
 } from "./LandingPage/RegistrationDetails";
 import { Book, Copy, X, Plus } from "react-feather";
-import {customStyles3} from "./CustomModalStyles";
+import { customStyles3 } from "./CustomModalStyles";
 import "./css/CreateCourse.css";
 import "react-dropdown/style.css";
 
@@ -29,7 +29,6 @@ let user = localdata
 let { _id } = user;
 
 let userType = JSON.parse(localStorage.getItem("userType"));
-console.log(theme);
 
 const CreateCourse = (props) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -51,9 +50,7 @@ const CreateCourse = (props) => {
     setIsOpen(true);
   }
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-  }
+  function afterOpenModal() {}
 
   function closeModal() {
     setIsOpen(false);
@@ -92,7 +89,7 @@ const CreateCourse = (props) => {
       return toast.error("Please fill out required fields");
     }
 
-    Axios.post("/course", courseObject, {
+    Axios.post("/api/course", courseObject, {
       header: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -132,8 +129,7 @@ const CreateCourse = (props) => {
     }
 
     let codeObject = { course_code: code };
-    console.log(code);
-    Axios.post("/checkCourse", codeObject, {
+    Axios.post("/api/checkCourse", codeObject, {
       header: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -141,13 +137,8 @@ const CreateCourse = (props) => {
       .then((res) => {
         if (res.data.success) {
           let courseID = res.data.data._id;
-          let courseName = res.data.data.name;
-
-          toast.info("Enrolling you in course " + courseName);
-
           let recordObject = { student_id: _id, course_id: courseID };
-          console.log(recordObject);
-          Axios.post("/records", recordObject, {
+          Axios.post("/api/records", recordObject, {
             header: {
               "Content-Type": "application/json; charset=utf-8",
             },
@@ -155,17 +146,16 @@ const CreateCourse = (props) => {
             .then((res) => {
               if (res.data.success) {
                 toast.success("Course joined successfully");
-                //window.location.href=`/course/${courseID}`
                 props.reload();
                 closeModal();
               } else {
                 toast.error("Error joining course");
               }
             })
-            .catch((error) =>
-              {console.log(error);
-              toast.error("Could not join course. Please try again")}
-            );
+            .catch((error) => {
+              console.log(error);
+              toast.error("Could not join course. Please try again");
+            });
         } else {
           return toast.error("Course code is not valid");
         }
@@ -174,9 +164,35 @@ const CreateCourse = (props) => {
   };
 
   return (
-    <div style={{ position: "absolute", bottom: 110, right: 110 }}>
+    <div style={{ position: "absolute", bottom: 100, right: 150 }}>
       <div className="create-course-div">
-        <Plus onClick={openModal} size={40} color="white" />
+        <div
+          onClick={openModal}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "auto",
+            height: "50px",
+            alignItems: "center",
+          }}
+        >
+          <Plus size={30} color="white" />
+          <p
+            style={{
+              fontFamily: "Poppins",
+              color: "white",
+              fontWeight: 600,
+              letterSpacing: 0.6,
+              fontSize: 20,
+              margin: 0,
+              padding: 0,
+              marginLeft: 5,
+              marginRight: 5,
+            }}
+          >
+            {userType === "teacher" ? "Create" : "Join"}
+          </p>
+        </div>
 
         <Modal
           isOpen={modalIsOpen}
@@ -458,7 +474,7 @@ const CreateCourse = (props) => {
                   marginTop: 10,
                 }}
               >
-                Copy this code and share with the students. They will use this
+                Copy this code and share with the students. They can use this
                 code to join this course
               </p>
             </React.Fragment>

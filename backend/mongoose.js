@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 require('dotenv').config();
 
+// Setting up MONGODB ATLAS Connection
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true }
 );

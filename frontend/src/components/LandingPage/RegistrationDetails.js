@@ -2,38 +2,32 @@ import React from "react";
 import Dropdown from "react-dropdown";
 import Axios from "axios";
 import validator from "validator";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "../../App.css";
 import "react-dropdown/style.css";
-import Swal from 'sweetalert2';
-import 'react-toastify/dist/ReactToastify.css';
+import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 import md5 from "md5";
-import {
-  ArrowLeft,
-  Eye,
-  EyeOff,
-  Briefcase,
-  Dribbble,
-} from "react-feather";
+import { ArrowLeft, Eye, EyeOff, Briefcase, Dribbble } from "react-feather";
 import userImage from "../../assets/user4.png";
 
 let randomUser = userImage;
 
 export const yearOptions = [
   {
-    value: "FY",
+    value: "First Year",
     label: "First Year",
   },
   {
-    value: "SY",
+    value: "Second Year",
     label: "Second Year",
   },
   {
-    value: "TY",
+    value: "Third Year",
     label: "Third Year",
   },
   {
-    value: "FY",
+    value: "Fourth Year",
     label: "Fourth Year",
   },
 ];
@@ -93,7 +87,7 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
   };
 
   const validatePassword = () => {
-    return validator.isLength(password, {min:5})
+    return validator.isLength(password, { min: 5 });
   };
 
   const validateEmail = () => {
@@ -107,9 +101,12 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
       !validateFName() ||
       !validatePassword()
     ) {
-      return toast.error("Form is invalid");
+      return toast.error(
+        "Invalid form. Please ensure you have filled all fields"
+      );
     }
-    Axios.post("/students", {
+
+    Axios.post("/api/students", {
       fName,
       lName,
       email,
@@ -118,37 +115,35 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
       department: studentDepartment,
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 200 && res.data.success) {
-          Axios.post("/students/login", {
+          Axios.post("/api/students/login", {
             email: email,
             password: encrypt(password),
           }).then((res) => {
-            console.log(res);
             if (res.data.data) {
               const details = res.data.data;
-              Swal.fire({icon: "success", "text": "Registration successful! Logging in..."});
+              Swal.fire({
+                icon: "success",
+                text: "Registration successful! Logging in...",
+              });
               setTimeout(() => {
                 localStorage.setItem("userDetails", JSON.stringify(details));
                 localStorage.setItem("userType", JSON.stringify("student"));
                 window.location.href = "/home";
               }, 2000);
             }
-          })
+          });
         } else if (res.data.success === false) {
           if (res.data.reason === "Email already exists") {
             toast.error("Account with this Email already exists");
           } else {
-            console.log(res.data.error);
             toast.error("Error");
           }
         } else {
-          console.log("error");
           toast.error("Error");
         }
       })
       .catch((err) => {
-        console.log(err);
         toast.error("Error");
       });
   };
@@ -160,26 +155,29 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
       !validateFName() ||
       !validatePassword()
     ) {
-      return toast.error("Form is invalid")
+      return toast.error(
+        "Invalid form. Please ensure you have filled all fields."
+      );
     }
 
-    Axios.post("/teachers", {
+    Axios.post("/api/teachers", {
       fName,
       lName,
       email,
       password: encrypt(password),
     })
       .then((res) => {
-        console.log(res.data);
         if (res.status === 200 && res.data.success) {
-          Axios.post("/teachers/login", {
+          Axios.post("/api/teachers/login", {
             email: email,
             password: encrypt(password),
           }).then((res) => {
-            console.log(res.data.data);
             if (res.data.data) {
               const details = res.data.data;
-              Swal.fire({icon: "success", text: "Registration successful! Logging in..."});
+              Swal.fire({
+                icon: "success",
+                text: "Registration successful! Logging in...",
+              });
               setTimeout(() => {
                 localStorage.setItem("userDetails", JSON.stringify(details));
                 localStorage.setItem("userType", JSON.stringify("teacher"));
@@ -189,24 +187,18 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
           });
         } else if (res.data.success === false) {
           if (res.data.reason === "Email already exists") {
-            console.log(res.data.reason);
             toast.error("Account with this Email already exists");
           } else {
-            console.log(res.data);
             toast.error("Error");
           }
         } else {
-          console.log("error");
           toast.error("Error");
         }
       })
       .catch((err) => {
-        console.log(err);
         toast.error("Error");
       });
   };
-
-  console.log('User type recieved in registration page is "', userType, '" ');
 
   return (
     <React.Fragment>
@@ -374,18 +366,10 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
         <div
           style={{ width: "50%", alignItems: "flex-start", display: "flex" }}
         >
-          <input
-            placeholder="First Name"
-            onChange={onChangefName}
-            onBlur={() => validateFName() ? null || true : toast.error('First name cannot be empty')}
-          />
+          <input placeholder="First Name" onChange={onChangefName} />
         </div>
         <div style={{ width: "50%" }}>
-          <input
-            placeholder="Last Name"
-            onChange={onChangelName}
-            onBlur={() => validateLName() ? null || true : toast.error('Last name cannot be empty')}
-          />
+          <input placeholder="Last Name" onChange={onChangelName} />
         </div>
       </div>
 
@@ -476,9 +460,6 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
           marginTop: 25,
         }}
       >
-        {/* <div style={{width: '1.8rem', height: '1.8rem', backgroundColor: '#09a4071a', borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center" , marginRight:15, border: '0px solid #09a407'}}>
-                    <Lock size={19} color="#09a407"/>
-                </div> */}
         <p
           style={{
             fontFamily: "Poppins",
@@ -509,7 +490,9 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
             type="email"
             placeholder="Email ID"
             onChange={onChangeEmail}
-            onBlur={() => validateEmail() ? null || true : toast.error('Invalid Email ID')}
+            onBlur={() =>
+              validateEmail() ? null || true : toast.error("Invalid Email ID")
+            }
           />
         </div>
         <div style={{ width: "50%" }}>
@@ -522,10 +505,14 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
           >
             <input
               type={viewPassword ? "password" : "text"}
-              placeholder="Password"
+              placeholder="Password (Min length 5)"
               onChange={onChangePassword}
               style={{ marginRight: 0 }}
-              onBlur={() => validatePassword() ? null : toast.error('Password should have 5 or more chracters')}
+              onBlur={() =>
+                validatePassword()
+                  ? null
+                  : toast.error("Password should have 5 or more characters")
+              }
             />
             {viewPassword ? (
               <Eye
@@ -584,7 +571,6 @@ const RegistrationDetails = ({ goBack, setLogin, userType, setUserType }) => {
           </p>
         </button>
       </div>
-      <ToastContainer/>
     </React.Fragment>
   );
 };

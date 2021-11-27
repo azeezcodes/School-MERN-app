@@ -8,7 +8,9 @@ const noteRouter = require("./routes/note.routes");
 const assignmentRouter = require("./routes/assignment.routes");
 const messageRouter = require("./routes/message.routes");
 const quizRouter = require("./routes/quiz.routes");
+const resetPasswordRouter = require("./routes/resetPassword.routes");
 
+// Importing database config
 require("./mongoose");
 require("dotenv").config();
 
@@ -19,22 +21,26 @@ const app = express();
 app.use(cors())
 app.use(express.json())
 
-app.use(studentRouter)
-app.use(teacherRouter)
-app.use(courseRouter)
-app.use(noteRouter)
-app.use(assignmentRouter)
-app.use(messageRouter)
-app.use(quizRouter)
+// Importing all routers
+app.use("/api", studentRouter)
+app.use("/api", teacherRouter)
+app.use("/api", courseRouter)
+app.use("/api", noteRouter)
+app.use("/api", assignmentRouter)
+app.use("/api", messageRouter)
+app.use("/api", quizRouter)
+app.use("/api", resetPasswordRouter)
 
 app.use(express.static(path.resolve(__dirname, '../frontend/build')));
 
+// Test api
 app.get("/api", (req, res) => {
     res.json({
         message: "Hello from server"
     })
 })
 
+// Redirect all requests not handled by above routes to frontend
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
 });

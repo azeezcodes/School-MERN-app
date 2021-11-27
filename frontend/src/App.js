@@ -14,6 +14,7 @@ import Quiz from "./components/Quiz";
 import AssignmentDetails from "./components/AssignmentDetails";
 import AssessmentReport from "./components/AssessmentReport";
 import QuizQuestion from "./components/QuizQuestion";
+import ResetPassword from "./components/LandingPage/ResetPassword";
 
 function App() {
   let width = window.innerWidth 
@@ -41,6 +42,7 @@ function App() {
     >
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/reset-password/*" element={<ResetPassword />} />
         <Route path="/home" element={<><Home /><Sidebar /></>} exact/>
         <Route path="/notes" element={<><Notes /><Sidebar /></>}exact/>
         <Route path="/search" element={<><Search /><Sidebar /></>}exact/>

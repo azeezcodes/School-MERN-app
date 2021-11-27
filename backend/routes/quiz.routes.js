@@ -5,6 +5,7 @@ const QuizResponse = require("../models/quizResponse.model");
 
 const router = new express.Router();
 
+// Create quiz
 router.post("/quiz", async (req, res) => {
   const quiz = new Quiz(req.body);
   try {
@@ -16,6 +17,7 @@ router.post("/quiz", async (req, res) => {
   }
 });
 
+// Create new question
 router.post("/quizQuestion", async (req, res) => {
     const quizQuestion = new QuizQuestion(req.body);
     try {
@@ -27,6 +29,7 @@ router.post("/quizQuestion", async (req, res) => {
     }
 });
 
+// Submit quiz response
 router.post("/submitQuiz", async (req, res) => {
   const quizResponse = new QuizResponse(req.body);
   try {
@@ -45,6 +48,7 @@ router.post("/submitQuiz", async (req, res) => {
   }
 });
 
+// Fetch a quiz by ID
 router.get("/quiz/:id", async (req, res) => {
   const _id = req.params.id;
   try {
@@ -58,6 +62,7 @@ router.get("/quiz/:id", async (req, res) => {
   }
 });
 
+// Get all questions in a quiz with quizID
 router.get("/questions/:id", async (req, res) => {
   const quiz_id = req.params.id;
   try {

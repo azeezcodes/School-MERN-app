@@ -24,8 +24,8 @@ import "react-toggle/style.css";
 import "./css/Sidebar.css";
 
 let width = window.innerWidth * 0.2;
-  let height = window.innerHeight * 2;
-  let randomUser = getRandomUser();
+let height = window.innerHeight * 2;
+let randomUser = getRandomUser();
 
 const Sidebar = () => {
   localStorage.setItem(
@@ -38,7 +38,7 @@ const Sidebar = () => {
   const userType = b ? JSON.parse(b) : "student";
 
   const [user, setUser] = useState(
-	  a
+    a
       ? JSON.parse(a)
       : {
           department: "",
@@ -66,7 +66,7 @@ const Sidebar = () => {
   }
 
   React.useEffect(() => {
-    Axios.get(`/${userType}/${user._id}`, {
+    Axios.get(`/api/${userType}/${user._id}`, {
       header: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -74,7 +74,6 @@ const Sidebar = () => {
       .then((res) => {
         if (res.data.success) {
           setUser(res.data.data);
-          console.log(user);
         } else {
           return toast.error("Error getting info");
         }
@@ -84,42 +83,41 @@ const Sidebar = () => {
 
   React.useEffect(() => {
     if (userType === "teacher") return;
-      Axios.get(`/fetchCourse/student/${user._id}`, {
-        header: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
+    Axios.get(`/api/fetchCourse/student/${user._id}`, {
+      header: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          setCourses(res.data.data);
+        } else {
+          console.log("Error fetching courses");
+        }
       })
-        .then((res) => {
-          if (res.data.success) {
-            setCourses(res.data.data);
-          } else {
-            return toast.error("Error fetching courses");
-          }
-        })
-        .catch(() =>
-          toast.error("Could not fetch your courses. Please try again")
-        );
- 
-    }, []);
+      .catch(() => {
+        console.log("Could not fetch your courses. Please try again");
+      });
+  }, [modalIsOpen]);
 
-	React.useEffect(() => {
-		if (userType === "student") return;
-			Axios.get(`/fetchCourse/teacher/${user._id}`, {
-			  header: {
-				"Content-Type": "application/json; charset=utf-8",
-			  },
-			})
-			  .then((res) => {
-				if (res.data.success) {
-				  setCourses(res.data.data);
-				} else {
-				  return toast.error("Error fetching courses");
-				}
-			  })
-			  .catch(() =>
-				toast.error("Could not fetch your courses. Please try again")
-			  );
-	}, [])
+  React.useEffect(() => {
+    if (userType === "student") return;
+    Axios.get(`/api/fetchCourse/teacher/${user._id}`, {
+      header: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          setCourses(res.data.data);
+        } else {
+          console.log("Error fetching courses");
+        }
+      })
+      .catch(() => {
+        console.log("Could not fetch your courses. Please try again");
+      });
+  }, [modalIsOpen]);
 
   const handleThemeChange = (e) => {
     setIsLightTheme(e.target.checked);
@@ -181,7 +179,7 @@ const Sidebar = () => {
         />
       ),
       path: "/notes",
-    }
+    },
   ];
 
   if (userType === "teacher") {
@@ -211,11 +209,7 @@ const Sidebar = () => {
       return toast.error("Name fields cannot be empty");
     }
 
-    if (user.fName == newFName && user.lName == newLName) {
-      toast.error("Please change name");
-      return;
-    }
-    const url = `/update/${userType}`;
+    const url = `/api/update/${userType}`;
     Axios.post(url, {
       fName: newFName,
       lName: newLName,
@@ -230,19 +224,18 @@ const Sidebar = () => {
       })
       .catch(() => toast.error("Could not update your name. Please try again"));
     closeModal();
+    reloadPage();
   };
 
   const sidebarData = courses.length ? courses : [];
 
   const reloadPage = () => {
-    console.log("Reloading the page");
     window.location.reload();
   };
 
   const logout = () => {
-    console.log("logout");
     window.localStorage.clear();
-  }
+  };
 
   return (
     <div>
@@ -254,15 +247,6 @@ const Sidebar = () => {
           borderBottomColor: theme === "dark" ? "#434343" : "#eee",
         }}
       >
-        <div className="settings-icon" style={{ marginRight: 0 }}>
-          <RotateCcw
-            size={21}
-            color={theme === "dark" ? "#eee" : "#232323"}
-            className="seticon"
-            onClick={reloadPage}
-          />
-        </div>
-
         <div className="settings-icon">
           <Settings
             size={21}
@@ -662,8 +646,6 @@ const Sidebar = () => {
               </p>
             </div>
 
-            {/* <div style={{width: '90%', height:1.5, backgroundColor: theme === 'dark' ? '#434343' : '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%' }}></div> */}
-
             <div
               style={{
                 display: "flex",
@@ -912,8 +894,6 @@ const Sidebar = () => {
           }}
           onClick={closeModalProfile}
         />
-
-        {/* <h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 500, fontSize: 25, padding:0, marginBottom:0}}>Settings</h2> */}
 
         <div
           className="changeColorBG"
@@ -1178,7 +1158,8 @@ const Sidebar = () => {
               letterSpacing: 0.4,
               marginTop: 50,
               textAlign: "center",
-            }} onClick={logout}
+            }}
+            onClick={logout}
           >
             Log out
           </p>

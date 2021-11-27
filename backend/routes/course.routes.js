@@ -5,6 +5,7 @@ const Student = require("../models/student.model");
 
 const router = new express.Router();
 
+// Create new course
 router.post("/course", async (req, res) => {
     const course = new Course(req.body);
     try {
@@ -18,6 +19,7 @@ router.post("/course", async (req, res) => {
     }
 })
 
+// Fetch course by ID
 router.get("/course/:id", async(req, res) => {
     const _id = req.params.id;
 
@@ -32,6 +34,7 @@ router.get("/course/:id", async(req, res) => {
     }
 })
 
+// Fetch all courses for a teacher
 router.get("/fetchCourse/teacher/:id", async(req, res) => {
     const _id = req.params.id;
 
@@ -46,6 +49,7 @@ router.get("/fetchCourse/teacher/:id", async(req, res) => {
     }
 })
 
+// Enroll student in a course
 router.post("/enrollStudent", async (req, res) => {
     const record = new Record(req.body);
     try {
@@ -57,6 +61,7 @@ router.post("/enrollStudent", async (req, res) => {
     }
 })
 
+// Fetch all courses for a student
 router.get("/fetchCourse/student/:id", async(req, res) => {
     const _id = req.params.id;
     const courses = [];
@@ -75,6 +80,7 @@ router.get("/fetchCourse/student/:id", async(req, res) => {
     }
 })
 
+// Get count of students in a course
 router.get("/studentCount/:id", async (req, res) => {
     const _id = req.params.id;
 
@@ -86,6 +92,7 @@ router.get("/studentCount/:id", async (req, res) => {
     }
 })
 
+// Get all students in a course
 router.get("/course/students/:id", async (req, res) => {
     const _id = req.params.id;
     const students = [];
@@ -102,6 +109,7 @@ router.get("/course/students/:id", async (req, res) => {
     }
 })
 
+// Check if a course code is valid
 router.post("/checkCourse", async (req, res) => {
     const course = await Course.findOne({course_code: req.body.course_code});
     try {
@@ -115,6 +123,7 @@ router.post("/checkCourse", async (req, res) => {
     }
 })
 
+// Create record of which student is enrolled in which course
 router.post("/records", async (req, res) => {
     const record = new Record(req.body);
     try {
@@ -126,18 +135,29 @@ router.post("/records", async (req, res) => {
     }
 })
 
-router.get("/search/:id/:fName/:lName", async(req, res) => {
+// Find students in a course
+router.post("/search/:id", async(req, res) => {
     const _id = req.params.id;
-    const fName = req.params.fName;
-    const lName = req.params.lName;
+    const fName = req.body.fName;
+    const lName = req.body.lName;
     const students = [];
     try {
         const records = await Record.find({ course_id : _id});
-        console.log(records);
         for (const record of records) {
             const student = await Student.findById(record.student_id);
-            if(student.fName.toLowerCase() == fName.toLowerCase() && student.lName.toLowerCase() == lName.toLowerCase())
-                students.push(student);
+            if(fName && lName)
+            {
+                if(student.fName.toLowerCase() == fName.toLowerCase() && student.lName.toLowerCase() == lName.toLowerCase())
+                    students.push(student);
+            } else if(!fName)
+            {
+                if(student.lName.toLowerCase() == lName.toLowerCase())
+                    students.push(student);
+            } else if(!lName)
+            {
+                if(student.fName.toLowerCase() == fName.toLowerCase())
+                    students.push(student);
+            }
         }
         res.send({success: true, data: students});
     } catch(error) {
@@ -145,6 +165,7 @@ router.get("/search/:id/:fName/:lName", async(req, res) => {
     }
 })
 
+// Remove student from a course
 router.post("/removeStudent", async (req, res) => {
     const course_id = req.body.course_id;
     const student_id = req.body.student_id;
@@ -161,6 +182,7 @@ router.post("/removeStudent", async (req, res) => {
     }
 })
 
+// Delete a course
 router.delete("/course/:id", async (req, res) => {
     const _id = req.params.id;
     try {
@@ -175,6 +197,7 @@ router.delete("/course/:id", async (req, res) => {
     }
 })
 
+// Update course name
 router.post("/course/changeName/:id", async (req, res) => {
     const _id = req.params.id;
     try {

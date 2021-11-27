@@ -4,13 +4,8 @@ import Toggle from "react-toggle";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
 import { EmptyStateSmall } from "./EmptyState";
-import {
-  Trash,
-  List,
-  Type,
-  X,
-} from "react-feather";
-import "./css/course.css";
+import { Trash, List, Type, X } from "react-feather";
+import "./css/Course.css";
 import "./css/CreateCourse.css";
 
 let localdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -196,7 +191,7 @@ export const RenderQuestion = ({
           style={{
             display: "flex",
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <div
@@ -374,7 +369,9 @@ const QuizQuestion = ({ history }) => {
       !option3 ||
       !option4.length ||
       correctOption <= 0 ||
-      correctOption >= 5
+      correctOption >= 5 ||
+      minChar <= 0 ||
+      textualQuesMarks <= 0
     ) {
       toast.error("Invalid question");
       return;
@@ -430,7 +427,7 @@ const QuizQuestion = ({ history }) => {
       option_2: null,
       option_3: null,
       option_4: null,
-      correct_option: null
+      correct_option: null,
     };
 
     setQuestions((questions) => [...questions, obj]);
@@ -460,45 +457,44 @@ const QuizQuestion = ({ history }) => {
     let totalMarks =
       questions.filter((q) => q.question_type === "mcq").length +
       textualMarks.reduce((a, b) => a + b, 0);
-    console.log(questions.filter((q) => q.question_type === "text"));
     let loc = window.location.href.split("/");
 
     let quiz = {
       questions,
       no_of_questions: questions.length,
-      total_marks : totalMarks,
+      total_marks: totalMarks,
       is_active: false,
       teacher_id: user._id,
       course_id: loc[loc.length - 1],
       quiz_title: quizName,
     };
-    console.log(quiz);
 
     let _id = null;
     var QID = 1;
 
-    Axios.post("/quiz", quiz)
+    Axios.post("/api/quiz", quiz)
       .then((res) => {
         if (res.data.success) {
           _id = res.data.data._id;
 
-          console.log(_id);
           if (_id) {
             toast.success("Quiz created");
-            Promise.all(questions.map((ques) => {
-              ques.quiz_id = _id;
-              console.log(ques);
-              console.log("ques", ques);
-              Axios.post("/quizQuestion", ques)
-                .then((res) => console.log("res", res))
-                .catch((e) => console.log(e));
-            }));
+            Promise.all(
+              questions.map((ques) => {
+                ques.quiz_id = _id;
+                Axios.post("/api/quizQuestion", ques)
+                  .then((res) => {})
+                  .catch((e) => console.log(e));
+              })
+            );
           }
         } else {
         }
       })
-      .catch((e) => console.log("error", e))
-      setTimeout(()=>{window.location.href = `/course/${loc[loc.length - 1]}`},3000)
+      .catch((e) => console.log("error", e));
+    setTimeout(() => {
+      window.location.href = `/course/${loc[loc.length - 1]}`;
+    }, 3000);
   };
 
   return (
@@ -522,7 +518,6 @@ const QuizQuestion = ({ history }) => {
         }}
         className={"background borderrad boxshadowtop"}
       >
-
         <div
           style={{
             display: "flex",
@@ -943,7 +938,7 @@ const QuizQuestion = ({ history }) => {
                         Minimum Characters required
                       </p>
                       <input
-                        type="text"
+                        type="number"
                         style={{
                           height: 40,
                           fontSize: 18,
@@ -978,7 +973,7 @@ const QuizQuestion = ({ history }) => {
                         Maximum Marks
                       </p>
                       <input
-                        type="text"
+                        type="number"
                         style={{
                           height: 40,
                           fontSize: 18,
@@ -1154,7 +1149,9 @@ const QuizQuestion = ({ history }) => {
             style={{ boxShadow: "none", backgroundColor: "transparent" }}
             onClick={() => {
               let loc = window.location.href.split("/");
-              setTimeout(()=>{window.location.href = `/course/${loc[loc.length - 1]}`},1000)
+              setTimeout(() => {
+                window.location.href = `/course/${loc[loc.length - 1]}`;
+              }, 1000);
             }}
           >
             <p
@@ -1284,7 +1281,6 @@ const QuizQuestion = ({ history }) => {
             onClick={() => {
               createQuiz();
               closeModal();
-              // history.goBack()
             }}
           >
             <p

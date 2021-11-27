@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { Search, Mail } from "react-feather";
 import { getRandomUser } from "./random";
 import "./css/CreateCourse.css";
-import "./css/course.css";
+import "./css/Course.css";
 
 let localdata = JSON.parse(localStorage.getItem("userDetails"));
 let user = localdata
@@ -25,7 +25,7 @@ const SearchPage = ({}) => {
   const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
-    Axios.get(`fetchCourse/teacher/${user._id}`)
+    Axios.get(`/api/fetchCourse/teacher/${user._id}`)
       .then((res) => {
         if (res.data.success) {
           let courses = res.data.data;
@@ -43,6 +43,7 @@ const SearchPage = ({}) => {
         href={`mailto:${email}?subject=${
           encodeURIComponent(subject) || ""
         }&body=${encodeURIComponent(body) || ""}`}
+        target="_blank"
       >
         {children}
       </a>
@@ -50,15 +51,14 @@ const SearchPage = ({}) => {
   };
 
   const search = () => {
-    if (!fName.length || !lName.length)
-    {
-      toast.error("Please specify both first and last name");
+    if (!fName.length && !lName.length) {
+      toast.error("Please specify name");
       return;
     }
     setCourseStudents([]);
     let arr = [];
     course.map((course, index) => {
-      Axios.get(`/search/${course._id}/${fName}/${lName}`)
+      Axios.post(`/api/search/${course._id}`, { fName, lName })
         .then((res) => {
           if (res.data.success) {
             res.data.data.forEach((t) => arr.push(t));
@@ -76,6 +76,7 @@ const SearchPage = ({}) => {
 
   const MarksRow = (stud) => {
     let { student } = stud;
+    const body = `Hi ${student.fName}! This is ${user.fName}, your instructor.`;
     return (
       <div
         style={{
@@ -206,8 +207,8 @@ const SearchPage = ({}) => {
           >
             <Mailto
               email={student.email}
-              subject="Contact student"
-              body="Hello, this is your teacher"
+              subject={"Reaching out regarding ..."}
+              body={body}
             >
               <Mail size={22} className="sub" />
             </Mailto>

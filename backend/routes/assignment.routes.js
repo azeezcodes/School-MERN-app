@@ -1,25 +1,26 @@
 const express = require("express");
 const multer = require("multer");
 const Assignment = require("../models/assignment.model");
-const Course = require("../models/course.model");
 const Student = require("../models/student.model");
 const Submission = require("../models/submission.model");
 const Record = require("../models/record.model")
 
 const router = new express.Router();
 
+// For uploading assignment attachment
 const upload = multer({
   limits: {
     fileSize: 10000000,
   },
   fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(pdf|docx|doc|jpg|jpeg|png)$/)) {
+    if (!file.originalname.match(/\.(pdf)$/)) {
       return cb(new Error("Please upload a valid file type"));
     }
     cb(undefined, true);
   },
 });
 
+// Create assignment
 router.post("/assignment", async (req, res) => {
   const assignment = new Assignment(req.body);
   try {
@@ -31,6 +32,7 @@ router.post("/assignment", async (req, res) => {
   }
 });
 
+// Fetch all assignments in a course
 router.get("/course/assignment/:id", async (req, res) => {
   const course_id = req.params.id;
 
@@ -47,6 +49,7 @@ router.get("/course/assignment/:id", async (req, res) => {
   }
 });
 
+// Get assignment by ID
 router.get("/assignment/:id", async (req, res) => {
   const _id = req.params.id;
 
@@ -61,6 +64,7 @@ router.get("/assignment/:id", async (req, res) => {
   }
 });
 
+// Post attachment for an assignment
 router.post("/assignment/attachment/:id", upload.single("file"), async (req, res) => {
     const assignment = await Assignment.findById(req.params.id);
     assignment.file = req.file.buffer;
@@ -72,6 +76,7 @@ router.post("/assignment/attachment/:id", upload.single("file"), async (req, res
   }
 );
 
+// Get attachment for an assignment
 router.get("/assignment/attachment/:id", async (req, res) => {
   try {
     const assignment = await Assignment.findById(req.params.id);
@@ -85,6 +90,7 @@ router.get("/assignment/attachment/:id", async (req, res) => {
   }
 });
 
+// Delete an assignment
 router.delete("/assignment/:id", async (req, res) => {
     try {
         const assignment = await Assignment.findByIdAndDelete(req.params.id);
@@ -98,6 +104,7 @@ router.delete("/assignment/:id", async (req, res) => {
     }
 })
 
+// Create a submission 
 router.post("/submission", async (req, res) => {
   const submission = new Submission(req.body);
   try {
@@ -109,6 +116,7 @@ router.post("/submission", async (req, res) => {
   }
 });
 
+// Upload file in submission
 router.post("/submission/attachment/:id", upload.single("file"), async (req, res) => {
     const submission = await Submission.findById(req.params.id);
     submission.file = req.file.buffer;
@@ -118,6 +126,7 @@ router.post("/submission/attachment/:id", upload.single("file"), async (req, res
   res.status(400).send({ error: error.message });
 });
 
+// Check if assignment has any attachments
 router.get("/hasAttachment/:id", async (req, res) => {
   try{
     const assignment = await Assignment.findById(req.params.id);
@@ -131,6 +140,7 @@ router.get("/hasAttachment/:id", async (req, res) => {
   }
 })
 
+// Get marks of all students for an assignment
 router.get("/marks/:id", async (req, res) => {
   try{
     const submitted = [];
@@ -153,6 +163,7 @@ router.get("/marks/:id", async (req, res) => {
   }
 })
 
+// Post grade for student for an assignment
 router.post("/submission/grade/:assignmentId/:studentId", async (req, res) => {
   try{
     const student_id = req.params.studentId;
@@ -167,6 +178,7 @@ router.post("/submission/grade/:assignmentId/:studentId", async (req, res) => {
   }
 })
 
+// Fetch assignment submission for a particular student
 router.get("/submission/getAttachment/:assignmentId/:studentId", async (req, res) => {
   try {
     const submission = await Submission.findOne({
@@ -184,6 +196,7 @@ router.get("/submission/getAttachment/:assignmentId/:studentId", async (req, res
   }
 });
 
+// Check if submission exists
 router.get("/hasSubmitted/:assignmentId/:studentId", async (req, res) => {
   try{
     const submission = await Submission.find({
@@ -201,6 +214,7 @@ router.get("/hasSubmitted/:assignmentId/:studentId", async (req, res) => {
   }
 })
 
+// Gives count of all students in an assignment
 router.get("/studentCount/assignment/:id", async (req, res) => {
   const _id = req.params.id;
 
@@ -214,7 +228,7 @@ router.get("/studentCount/assignment/:id", async (req, res) => {
   }
 })
 
-
+// Find students who have submitted assignment
 router.get("/assignment/students/:id", async (req, res) => {
   const _id = req.params.id;
   const students = [];

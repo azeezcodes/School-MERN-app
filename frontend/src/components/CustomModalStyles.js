@@ -70,7 +70,7 @@ export const customStyles3 = {
     width: "60%",
     padding: "25px",
     alignSelf: "center",
-    height: "auto",
+    height: "85%",
     paddingTop: "30px",
   },
   overlay: {

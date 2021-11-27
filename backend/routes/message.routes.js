@@ -3,6 +3,7 @@ const Message = require("../models/message.model");
 
 const router = new express.Router();
 
+// Post a new message
 router.post("/message", async (req, res) => {
     const message = new Message(req.body);
     try {
@@ -14,6 +15,7 @@ router.post("/message", async (req, res) => {
     }
 })
 
+// Fetch all messages for a course
 router.get("/messages/:id", async(req, res) => {
     const course_id = req.params.id;
 
@@ -27,17 +29,5 @@ router.get("/messages/:id", async(req, res) => {
         res.status(500).send({success: false, error});
     }
 })
-
-// router.delete("/notes/:id", async (req, res) => {
-//     try {
-//         const note = await Note.findByIdAndDelete(req.params.id)
-//         if (!note) {
-//         return res.status(404).send({success: false})
-//         }
-//         res.send({success: true, note})
-//        } catch (e) {
-//         res.status(500).send()
-//        }
-// })
 
 module.exports = router
