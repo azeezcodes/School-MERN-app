@@ -369,9 +369,7 @@ const QuizQuestion = ({ history }) => {
       !option3 ||
       !option4.length ||
       correctOption <= 0 ||
-      correctOption >= 5 ||
-      minChar <= 0 ||
-      textualQuesMarks <= 0
+      correctOption >= 5
     ) {
       toast.error("Invalid question");
       return;
