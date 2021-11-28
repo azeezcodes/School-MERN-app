@@ -54,6 +54,7 @@ In case of any queries, you can reach out to rashii8791@gmail.com
 ---
 
 Try out the application [here](https://rs-engage.herokuapp.com/)
+(Use different browsers while using multiple accounts)
 
 ## Future Scope
 ---
