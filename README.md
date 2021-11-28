@@ -1,6 +1,6 @@
+<img src="https://github.com/rashi-s17/engage/blob/1542d78489b11776beb462e13c838bd69a9e7236/images/Engage.PNG"></img>
 # Engage
 ---
-
 Engage, as the name says, is a virtual classroom aimed at making virtual learning more engaging for both students and teachers. \
 It will allow teachers to create and manage courses, post study material, create assignments and take quizzes. Students can join courses, view study material, submit assignments and view their performance.
 
@@ -23,6 +23,8 @@ It will allow teachers to create and manage courses, post study material, create
 - Discussion platform for both students and teachers to clear doubts and ask queries
 - Users can create Notes
 - Dark mode
+
+![demo](https://github.com/rashi-s17/engage/blob/1542d78489b11776beb462e13c838bd69a9e7236/images/Engage_Trim.gif)
 
 ## Tech Stack
 ---
