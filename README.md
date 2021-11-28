@@ -53,7 +53,8 @@ In case of any queries, you can reach out to rashii8791@gmail.com
 ## Try It Yourself
 ---
 
-Try out the application [here](https://rs-engage.herokuapp.com/)
+Try out the application [here](https://rs-engage.herokuapp.com/) \
+\
 (Use different browsers while using multiple accounts)
 
 ## Future Scope
@@ -61,3 +62,8 @@ Try out the application [here](https://rs-engage.herokuapp.com/)
 - Enable autograding for code based assignments
 - Add a request approval flow for joining a course
 - Make the UI responsive so it can be used on mobiles as well
+
+## Project Planning
+---
+
+The project planning and management was done using Notion. Here is a [link](https://endurable-switch-def.notion.site/Engage-fcb2b0e521c244b080b343d6a5d5d989) to the notion page.
