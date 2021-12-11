@@ -48,14 +48,10 @@ To run locally,
 - Install node dependencies with ```npm install```
 - Run ```npm start```
 
-In case of any queries, you can reach out to rashii8791@gmail.com
-
 ## Try It Yourself
 ---
 
 Try out the application [here!](https://rs-engage.herokuapp.com/) \
-\
-Video submission link: [Engage](https://drive.google.com/file/d/10nsqgpocKzgU9ylIv7KYlutzKjhHpjTK/view) \
 \
 (Use different browsers while using multiple accounts)
 
